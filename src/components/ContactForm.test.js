@@ -10,7 +10,7 @@ describe("Contact Form", () => {
     });
 
     it('renders without errors', ()=>{
-        console.log(ContactForm)
+        render(<ContactForm />)
     });
 
     it('renders the contact form header', ()=> {
@@ -51,6 +51,12 @@ describe("Contact Form", () => {
     });
     
     it('renders "email must be a valid email address" if an invalid email is entered', async () => {
+
+        const emailInput = screen.queryByLabelText(/email/i)
+        expect(emailInput).toBeInTheDocument()
+        userEvent.type(emailInput, 'hello')
+        const errorMessage = screen.queryByText(/email must be a valid email address/i)
+        expect(errorMessage).toBeInTheDocument()
         
     });
     
