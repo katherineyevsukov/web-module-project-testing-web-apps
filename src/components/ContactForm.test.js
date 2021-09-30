@@ -25,12 +25,19 @@ describe("Contact Form", () => {
         const errorMessages = screen.queryAllByTestId('error')
         expect(errorMessages).toHaveLength(1)
     });
+
+   it('renders THREE error messages if user enters no values into any fields.', async () => {
+        const submitButton = screen.queryByRole("button")
+        expect(submitButton).toBeInTheDocument()
+        userEvent.click(submitButton)
+        const errorMessages = screen.queryAllByTestId('error')
+        expect(errorMessages).toHaveLength(3)
+    
+    });    
 })
 
 
-test('renders THREE error messages if user enters no values into any fields.', async () => {
-    
-});
+
 
 test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
     
