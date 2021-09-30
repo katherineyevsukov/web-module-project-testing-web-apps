@@ -74,11 +74,45 @@ describe("Contact Form", () => {
     });
     
     it('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
+        const firstNameInput = screen.getByLabelText(/first name*/i)
+        expect(firstNameInput).toBeInTheDocument()
+        userEvent.type(firstNameInput, "katherine")
+        const lastNameInput = screen.queryByLabelText(/last Name*/i)
+        expect(lastNameInput).toBeInTheDocument()
+        userEvent.type(lastNameInput, "yevsukov")
+        const emailInput = screen.getByLabelText(/email/i)
+        expect(emailInput).toBeInTheDocument()
+        userEvent.type(emailInput,'kat@kat.com')
+        const submitButton = screen.getByRole("button")
+        userEvent.click(submitButton)
+        await waitFor(() => {
+            expect(screen.getByTestId("firstnameDisplay")).toBeInTheDocument()
+            expect(screen.getByTestId("lastnameDisplay")).toBeInTheDocument()
+            expect(screen.getByTestId("emailDisplay")).toBeInTheDocument()
+            expect(screen.queryByTestId("messageDisplay")).toBeNull()
+        })
         
     });
     
     it('renders all fields text when all fields are submitted.', async () => {
-        
+        const firstNameInput = screen.getByLabelText(/first name*/i)
+        const lastNameInput = screen.getByLabelText(/last Name*/i)
+        const emailInput = screen.getByLabelText(/email/i)
+        const messageInput = screen.getByLabelText(/message/i)
+        const submitButton = screen.getByRole("button")
+
+        userEvent.type(firstNameInput, "Katherine")
+        userEvent.type(lastNameInput, "Yevsukov")
+        userEvent.type(emailInput, "kat@kat.com")
+        userEvent.type(messageInput, "hello")
+        userEvent.click(submitButton)
+
+        await waitFor(() => {
+            expect(screen.getByTestId('firstnameDisplay')).toHaveTextContent('Katherine');
+            expect(screen.getByTestId('lastnameDisplay')).toHaveTextContent('Yevsukov');
+            expect(screen.getByTestId('emailDisplay')).toHaveTextContent('kat@kat.com');
+            expect(screen.getByTestId('messageDisplay')).toHaveTextContent('hello');
+        })
     }); 
 })
 
