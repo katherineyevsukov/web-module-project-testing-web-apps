@@ -61,7 +61,16 @@ describe("Contact Form", () => {
     });
     
     it('renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
-        
+        const firstNameInput = screen.getByLabelText(/first name*/i)
+        expect(firstNameInput).toBeInTheDocument()
+        userEvent.type(firstNameInput, "katherine")
+        const emailInput = screen.getByLabelText(/email/i)
+        expect(emailInput).toBeInTheDocument()
+        userEvent.type(emailInput,'kat@kat.com')
+        const submitButton = screen.getByRole("button")
+        userEvent.click(submitButton)
+        const errorMessage = await screen.findByText(/lastName is a required field/i)
+        expect(errorMessage).toBeInTheDocument()
     });
     
     it('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
